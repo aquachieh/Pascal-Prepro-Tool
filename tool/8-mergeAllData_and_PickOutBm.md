@@ -1,0 +1,2 @@
+- merge all anno/img dir data
+- Pick out Benchmark(testingdata)
