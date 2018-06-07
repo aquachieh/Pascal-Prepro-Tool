@@ -6,6 +6,12 @@ only crop avi
 setting :fpsIn
 INPUT: InputVideos(video dir)
 OUTPUT: OutputVideos(frame)
+
+if want to use opencv3:
+>>import sys
+>>sys.path.insert(0, '/usr/local/opencv-3.4.0/lib/python2.7/dist-packages')
+>>import cv2
+
 '''
 
 import os
@@ -32,7 +38,12 @@ INPUT_VIDEOS_PATH = os.path.join(ROOT_PATH,'InputVideos')
 OUTPUT_VIDEOS_PATH = os.path.join(ROOT_PATH,'OutputVideos')
 CreateFolder(OUTPUT_VIDEOS_PATH)
 
-
+# Check opencv version
+if cv2.__version__[0] == '2':
+    PROP_FPS = cv2.cv.CV_CAP_PROP_FPS
+else: #if cv2.__version__[0] == '3':
+    PROP_FPS = cv2.CAP_PROP_FPS
+    
 ## Process Single Video ##    
 def ProcessSingleVideo(FileName):
     # Get Video Name #
@@ -40,7 +51,7 @@ def ProcessSingleVideo(FileName):
     #Create Input Video Object #
     video = cv2.VideoCapture(os.path.join(INPUT_VIDEOS_PATH,fileName))
     # Set Output fps (use cutRate to control) #
-    fpsIn = int(video.get(cv2.cv.CV_CAP_PROP_FPS))
+    fpsIn = int(video.get(PROP_FPS))
     fpsOut =  30      #fpsIn 5   #----------------------
     cutRate = int(1.0*fpsIn/fpsOut)
     print 'fpsIn: {}, fpsOut: {}, cuteRate: {}'.format(fpsIn,fpsOut,cutRate)
